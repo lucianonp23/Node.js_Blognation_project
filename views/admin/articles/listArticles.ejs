@@ -1,0 +1,54 @@
+<%- include ('../../partials/header.ejs') %>
+
+<%- include ('../../partials/navbar.ejs') %>
+
+<body>
+    <div class="container">
+        <hr>
+        <h2>Articles</h2>
+        <a href="/admin/articles/new" class="btn btn-success">New Article</a>
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Slug</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% articles.forEach((articles)=>{ %> 
+                    <tr>
+                        <th><%=articles.id %></th>
+                        <th><%=articles.title %></th>
+                        <th><%=articles.slug %></th>
+                        <th><%=articles.category.title %></th>
+                        <th>
+                            <form action="/admin/articles/delete" method="POST" style="display: inline;" onsubmit="confirmation(event,this)"  >
+                                <input type="hidden" name="articleId" value="<%=articles.id%>">
+                                <button type="button" class="btn btn-dark"><a href="/admin/articles/<%=articles.id%>">Edit</a></button>
+                                 <button type="submit"  class="btn btn-danger" >Delete</button>
+                                
+                            </form>
+                        </th>
+                    
+                    </tr>
+                <%})%>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<%- include ('../../partials/footer.ejs') %>
+<script>
+    function confirmation(event,form){
+        event.preventDefault();
+        var decision = confirm("Delete this article?");
+        if(decision){
+            form.submit();
+        } 
+    }
+    
+</script>

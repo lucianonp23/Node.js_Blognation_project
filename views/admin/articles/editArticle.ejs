@@ -1,0 +1,54 @@
+<%- include ('../../partials/header.ejs') %>
+
+<%- include ('../../partials/navbar.ejs') %>
+<body>
+    <div class="container mt-3  ">
+        <div class="card">
+            <div class="card-header">
+                <h3>Update your Article</h3>
+            </div>
+            <div class="card-body">
+                <h4><%=article.title%></h4>
+                <form method="POST" action="./updateArticle" >
+                    <label  >Title</label>
+                    <input class="form-control mb-2" type="text" name="title" placeholder="Type here the new article title" value="<%=article.title%>">
+                    <label for="">Body</label>
+                    <textarea class="form-control mb-2" name="body" id="article" ></textarea> 
+                    <input type="hidden" name="id"  value="<%=article.id%>">
+                    <select name="category" >
+                        
+                        <% categories.forEach(category=>{ %>
+                            <% if(category.id == article.category.id){ %>
+                                <option selected value="<%=category.id%>"><%=category.title %></option>
+                            <%}else{ %>
+                                <option value="<%=category.id%>"><%=category.title %></option>
+                            <%}%>
+                            
+                        <%})%>
+                    </select>
+                    <button class="btn btn-success">Update your article</button>
+                </form>
+            </div>
+        </div>
+    <div id="content" style="display:none">
+        <%-article.body %>
+    </div>
+
+    
+    </div>
+
+    <script src="/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: "#article",
+            plugins: [
+                'advlist print fullscreen autolink preview hr searchreplace wordcount media save table paste emoticons' ],
+            init_instance_callback: ()=>{
+                tinymce.get("article").setContent($("#content").html())
+            } 
+        })
+    </script>
+</body>
+
+
+<%- include ('../../partials/footer.ejs') %>
