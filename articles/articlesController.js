@@ -3,19 +3,15 @@ const slugify = require("slugify");
 const router= express.Router();
 const Category= require("../categories/Category");
 const Article = require("./Article");
+const adminAuth= require("../middlewares/adminAuth");
 
-
-router.get("/articles",function(req,res){
-    res.send("Esse é o meu campo de artigos");
-});
 
 //Creating an article
-router.get("/admin/articles/new",function(req,res){
+router.get("/admin/articles/new",adminAuth,function(req,res){
     Category.findAll().then(categories=>{
         res.render("./admin/articles/new",{categories:categories});
     });
-    
-    
+        
 });
 
 //Saving an article
@@ -39,7 +35,7 @@ router.post("/articles/savingArticles", function(req,res){
 
 //List articles
 
-router.get("/admin/Articles",(req,res)=>{
+router.get("/admin/Articles",adminAuth,(req,res)=>{
     Article.findAll({
         include:[{model:Category}]
     }).then(articles=>{

@@ -9,13 +9,14 @@ const adminAuth=require("../middlewares/adminAuth");
 router.get("/admin/users",adminAuth,(req,res)=>{
     Users.findAll().then(users=>{
        res.render("admin/users/index",{users:users}) 
-    })
+    });
     
-})
+});
 
 //page for user creation
-router.get("/admin/users/create", (req,res)=>{
+router.get("/admin/users/create",adminAuth, (req,res)=>{
     res.render("admin/users/create");
+    
 });
 
 //saving user data on BD
@@ -64,17 +65,21 @@ router.post("/users/authenticate",(req,res)=>{
                     email:email,
                     password:password
                 }
-            res.json(req.session.user);
+            res.redirect("/admin/articles");
             }else {
                 res.redirect("/users/login");   
             }
-            
-           
+                       
         }else{
             res.redirect("/users/login");
         }
     })
-})
+});
+// user logout
+router.get("/users/logout", (req,res)=>{
+    req.session.user=null;
+    res.redirect("/");
+});
 
 
 

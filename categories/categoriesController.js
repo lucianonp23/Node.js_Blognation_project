@@ -3,8 +3,9 @@ const Category = require("./Category");
 const router= express.Router();
 const slugify = require("Slugify");
 const { response } = require("express");
+const adminAuth= require("../middlewares/adminAuth");
 
-router.get("/admin/categories/new",function(req,res){
+router.get("/admin/categories/new",adminAuth,function(req,res){
     res.render("./admin/categories/new");
 });
 
@@ -42,7 +43,7 @@ router.post("/admin/categories/delete", function(req,res){
 });
 
 
-router.get("/admin/categories",function(req,res){
+router.get("/admin/categories",adminAuth,function(req,res){
     Category.findAll().then(categories=>{
         
         res.render("./admin/categories/list",{categories:categories});
@@ -51,7 +52,7 @@ router.get("/admin/categories",function(req,res){
 });
 
 //Route for edit category
-router.get("/admin/categories/edit/:id",function(req,res){
+router.get("/admin/categories/edit/:id",adminAuth,function(req,res){
     var id = req.params.id;
     if(isNaN(id)){
         res.redirect("/admin/categories");
@@ -85,7 +86,5 @@ router.post("/categories/updateCategory", function(req,res){
 
 
 });
-
-
 
 module.exports= router
